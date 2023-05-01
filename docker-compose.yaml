@@ -41,20 +41,48 @@ services:
     depends_on:
       - kafka
 
-#  kafka-listener-service:
-#    build:
-#      dockerfile: kafka-listener-service/Dockerfile
-#    ports:
-#      - "8080:8081"
-#    depends_on:
-#      - kafka
-#      - kafka-producer-service
-#
-#  rest-service:
-#    build:
-#      dockerfile: rest-service/Dockerfile
-#    ports:
-#      - "8080:8082"
+  data-analyzer:
+    build:
+      context: .
+      dockerfile: data-analyzer/Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - kafka
+      - data-generator
+
+  sms-notifier:
+    build:
+      context: .
+      dockerfile: sms-notifier/Dockerfile
+    ports:
+      - "8083:8080"
+
+  email-notifier:
+    build:
+      context: .
+      dockerfile: email-notifier/Dockerfile
+    ports:
+      - "8084:8080"
+
+  mobile-notifier:
+    build:
+      context: .
+      dockerfile: mobile-notifier/Dockerfile
+    ports:
+      - "8085:8080"
+
+  alarm-notifier:
+    build:
+      context: .
+      dockerfile: alarm-notifier/Dockerfile
+    ports:
+      - "8082:8080"
+    depends_on:
+      - kafka
+      - sms-notifier
+      - email-notifier
+      - mobile-notifier
 
 volumes:
   zookeeper_data:

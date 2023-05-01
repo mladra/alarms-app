@@ -3,15 +3,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.example</groupId>
-	<artifactId>rest-api</artifactId>
+	<artifactId>alarms-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>rest-api</name>
+	<name>alarms-app</name>
 	<modules>
 		<module>kafka-api</module>
 		<module>data-generator</module>
 		<module>data-analyzer</module>
-		<module>rest-service</module>
+		<module>alarm-notifier</module>
+		<module>sms-notifier</module>
+		<module>email-notifier</module>
+		<module>mobile-notifier</module>
 	</modules>
 	<properties>
 		<java.version>11</java.version>

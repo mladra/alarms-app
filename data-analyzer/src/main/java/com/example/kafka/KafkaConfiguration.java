@@ -26,14 +26,14 @@ public class KafkaConfiguration {
     public ConsumerFactory<String, SensorDataDTO> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddresses);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "kafka-listener-service-group");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "data-analyzer-group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, SensorDataDTO> messageListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, SensorDataDTO> dataListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, SensorDataDTO> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
