@@ -8,9 +8,9 @@
 	<packaging>pom</packaging>
 	<name>rest-api</name>
 	<modules>
-		<module>api</module>
-		<module>kafka-producer-service</module>
-		<module>kafka-listener-service</module>
+		<module>kafka-api</module>
+		<module>data-generator</module>
+		<module>data-analyzer</module>
 		<module>rest-service</module>
 	</modules>
 	<properties>
