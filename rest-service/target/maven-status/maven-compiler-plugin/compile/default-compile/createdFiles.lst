@@ -1,0 +1,7 @@
+com\example\message\boundary\MessageResource.class
+com\example\message\entity\MessageEntity$Builder.class
+com\example\message\control\MessageRepository.class
+com\example\RestServiceApplication.class
+com\example\message\control\MessageJPARepository.class
+com\example\message\entity\MessageEntity.class
+com\example\message\control\MessageEntityJPA.class
