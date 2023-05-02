@@ -1,24 +1,39 @@
 package com.example.kafka;
 
 import com.example.api.SensorDataDTO;
+import com.example.data.control.DataAnalyzer;
+import com.example.data.entity.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Service
 public class DataListener {
 
     private static final Logger log = LoggerFactory.getLogger(DataListener.class);
-    private static final String URI = "http://alarm-notifier:8080/alarm-notifier/raise";
+    private static final String TEMPERATURE = "temperature";
+    private final DataAnalyzer dataAnalyzer;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    public DataListener(DataAnalyzer dataAnalyzer) {
+        this.dataAnalyzer = dataAnalyzer;
+    }
 
     @KafkaListener(topics = "sensors-data", containerFactory = "dataListenerContainerFactory")
     void handleMessage(SensorDataDTO data) {
         log.info("Received data: {}", data);
-//        restTemplate.put(URI, data); TODO: mladra:
+        Sensor.Builder builder = Sensor.builder()
+                .withId(data.getId())
+                .withName(data.getName());
+        Optional.ofNullable(data.getData())
+                .map(readings -> readings.get(TEMPERATURE))
+                .map(Double::valueOf)
+                .ifPresent(builder::withTemperature);
+        dataAnalyzer.analyze(builder.build());
     }
 
 }
