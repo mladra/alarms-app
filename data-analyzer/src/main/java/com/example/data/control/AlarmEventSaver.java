@@ -7,9 +7,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AlarmEventListener implements ApplicationListener<AlarmEvent> {
+public class AlarmEventSaver implements ApplicationListener<AlarmEvent> {
 
-    private final static Logger logger = LoggerFactory.getLogger(AlarmEventListener.class);
+    private final static Logger logger = LoggerFactory.getLogger(AlarmEventSaver.class);
 
     @Override
     public void onApplicationEvent(AlarmEvent event) {

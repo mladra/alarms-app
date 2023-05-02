@@ -21,6 +21,19 @@ services:
     depends_on:
       - zookeeper
 
+  database:
+    build:
+      context: database
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
+    restart: always
+    environment:
+      POSTGRES_USER: alarms-app
+      POSTGRES_PASSWORD: alarms-app-password
+
   kafdrop:
     image: obsidiandynamics/kafdrop
     restart: "no"
@@ -34,8 +47,8 @@ services:
 
   data-generator:
     build:
-      context: .
-      dockerfile: data-generator/Dockerfile
+      context: data-generator
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -43,8 +56,8 @@ services:
 
   data-analyzer:
     build:
-      context: .
-      dockerfile: data-analyzer/Dockerfile
+      context: data-analyzer
+      dockerfile: Dockerfile
     ports:
       - "8081:8080"
     depends_on:
@@ -53,29 +66,29 @@ services:
 
   sms-notifier:
     build:
-      context: .
-      dockerfile: sms-notifier/Dockerfile
+      context: sms-notifier
+      dockerfile: Dockerfile
     ports:
       - "8083:8080"
 
   email-notifier:
     build:
-      context: .
-      dockerfile: email-notifier/Dockerfile
+      context: email-notifier
+      dockerfile: Dockerfile
     ports:
       - "8084:8080"
 
   mobile-notifier:
     build:
-      context: .
-      dockerfile: mobile-notifier/Dockerfile
+      context: mobile-notifier
+      dockerfile: Dockerfile
     ports:
       - "8085:8080"
 
   alarm-notifier:
     build:
-      context: .
-      dockerfile: alarm-notifier/Dockerfile
+      context: alarm-notifier
+      dockerfile: Dockerfile
     ports:
       - "8082:8080"
     depends_on:
@@ -88,4 +101,6 @@ volumes:
   zookeeper_data:
     driver: local
   kafka_data:
+    driver: local
+  db_data:
     driver: local
