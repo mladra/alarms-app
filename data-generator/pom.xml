@@ -15,7 +15,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.example.KafkaProducerServiceApplication</start-class>
+        <start-class>com.example.DataGeneratorApplication</start-class>
     </properties>
 
     <dependencies>
@@ -41,7 +41,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.example.KafkaProducerServiceApplication</mainClass>
+                    <mainClass>com.example.DataGeneratorApplication</mainClass>
                     <layout>JAR</layout>
                     <layers>
                         <enabled>true</enabled>

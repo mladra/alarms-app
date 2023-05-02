@@ -15,7 +15,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.example.KafkaListenerServiceApplication</start-class>
+        <start-class>com.example.DataAnalyzerApplication</start-class>
     </properties>
 
     <dependencies>
@@ -32,6 +32,18 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -41,7 +53,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.example.KafkaListenerServiceApplication</mainClass>
+                    <mainClass>com.example.DataAnalyzerApplication</mainClass>
                     <layout>JAR</layout>
                     <layers>
                         <enabled>true</enabled>

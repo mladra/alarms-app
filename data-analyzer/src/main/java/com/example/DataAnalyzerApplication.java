@@ -3,12 +3,15 @@ package com.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 
 @SpringBootApplication
-public class KafkaListenerServiceApplication {
+@EnableJpaRepositories
+public class DataAnalyzerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KafkaListenerServiceApplication.class, args);
+        SpringApplication.run(DataAnalyzerApplication.class, args);
     }
 
 }

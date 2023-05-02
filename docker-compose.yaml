@@ -1,4 +1,4 @@
-version: "2"
+version: "3.3"
 
 services:
   zookeeper:
@@ -64,38 +64,38 @@ services:
       - kafka
       - data-generator
 
-  sms-notifier:
-    build:
-      context: sms-notifier
-      dockerfile: Dockerfile
-    ports:
-      - "8083:8080"
-
-  email-notifier:
-    build:
-      context: email-notifier
-      dockerfile: Dockerfile
-    ports:
-      - "8084:8080"
-
-  mobile-notifier:
-    build:
-      context: mobile-notifier
-      dockerfile: Dockerfile
-    ports:
-      - "8085:8080"
-
-  alarm-notifier:
-    build:
-      context: alarm-notifier
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8080"
-    depends_on:
-      - kafka
-      - sms-notifier
-      - email-notifier
-      - mobile-notifier
+#  sms-notifier:
+#    build:
+#      context: sms-notifier
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8083:8080"
+#
+#  email-notifier:
+#    build:
+#      context: email-notifier
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8084:8080"
+#
+#  mobile-notifier:
+#    build:
+#      context: mobile-notifier
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8085:8080"
+#
+#  alarm-notifier:
+#    build:
+#      context: alarm-notifier
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8082:8080"
+#    depends_on:
+#      - kafka
+#      - sms-notifier
+#      - email-notifier
+#      - mobile-notifier
 
 volumes:
   zookeeper_data:
