@@ -26,7 +26,7 @@ public class DataAnalyzer {
     public DataAnalyzer(Collection<AlarmCondition> conditions, ApplicationEventPublisher eventPublisher) {
         this.conditions = conditions;
         this.eventPublisher = eventPublisher;
-        logger.info("Discovered conditions: {}", this.conditions);
+        logger.info("Discovered conditions: {}", this.conditions.stream().map(AlarmCondition::name).collect(Collectors.toSet()));
     }
 
     public Map<String, Long> getAlarmsCountByConditionName(Long sensorId) {

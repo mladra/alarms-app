@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AlarmEventSaver implements ApplicationListener<AlarmEvent> {
 
@@ -24,19 +26,27 @@ public class AlarmEventSaver implements ApplicationListener<AlarmEvent> {
     public void onApplicationEvent(AlarmEvent event) {
         logger.info("Received application event: {}", event);
         if (isAlarmCleared(event)) {
-            AlarmEventJPA entity = new AlarmEventJPA();
-            entity.setType(AlarmEventJPA.AlarmEventType.CLEARED);
-            entity.setCondition(entity.getCondition());
-            entity.setSensorId(entity.getSensorId());
-            repository.save(entity);
+            repository.findFirstBySensorIdAndConditionOrderByOccurrenceTimeDesc(event.getSensorId(), event.getName())
+                    .filter(alarm -> AlarmEventJPA.AlarmEventType.RAISE.equals(alarm.getType()))
+                    .map(ignored -> mapToJPAEntity(event, AlarmEventJPA.AlarmEventType.CLEARED))
+                    .ifPresent(repository::save);
         } else {
-            repository.findAlarmEventJPABySensorIdAndConditionOrderByOccurrenceTimeDesc(event.getSensorId(), event.getName())
+            repository.findFirstBySensorIdAndConditionOrderByOccurrenceTimeDesc(event.getSensorId(), event.getName())
                     .filter(alarm -> !AlarmEventJPA.AlarmEventType.CLEARED.equals(alarm.getType()))
+                    .or(() -> Optional.of(mapToJPAEntity(event, AlarmEventJPA.AlarmEventType.RAISE)))
                     .ifPresent(repository::save);
         }
     }
 
     private boolean isAlarmCleared(AlarmEvent alarmEvent) {
         return alarmEvent instanceof AlarmClearedEvent;
+    }
+
+    private AlarmEventJPA mapToJPAEntity(AlarmEvent event, AlarmEventJPA.AlarmEventType type) {
+        AlarmEventJPA entity = new AlarmEventJPA();
+        entity.setType(type);
+        entity.setCondition(event.getName());
+        entity.setSensorId(event.getSensorId());
+        return entity;
     }
 }

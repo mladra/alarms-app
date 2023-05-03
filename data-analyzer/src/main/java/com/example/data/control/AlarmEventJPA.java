@@ -1,7 +1,8 @@
 package com.example.data.control;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "ALARMS_EVENTS")
@@ -24,7 +25,7 @@ public class AlarmEventJPA {
 
     @Column(name = "OCCURRENCE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private OffsetDateTime occurrenceTime;
+    private Date occurrenceTime;
 
     public void setSensorId(Long sensorId) {
         this.sensorId = sensorId;
@@ -54,14 +55,14 @@ public class AlarmEventJPA {
         return type;
     }
 
-    public OffsetDateTime getOccurrenceTime() {
+    public Date getOccurrenceTime() {
         return occurrenceTime;
     }
 
     @PrePersist
     @PreUpdate
     void beforeInsert() {
-        this.occurrenceTime = OffsetDateTime.now();
+        this.occurrenceTime = Date.from(Instant.now());
     }
 
     public enum AlarmEventType {

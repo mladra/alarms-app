@@ -1,0 +1,36 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="createAlarmsEventsSequence" author="mladra">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="SEQ_ALARMS_EVENTS"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="SEQ_ALARMS_EVENTS" minValue="1" incrementBy="1" />
+    </changeSet>
+    <changeSet id="createAlarmsEventsTable" author="mladra">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="alarms_events"/>
+            </not>
+        </preConditions>
+        <createTable tableName="alarms_events">
+            <column name="event_id" type="number">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="type" type="varchar2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condition" type="varchar2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="occurrence_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sensor_id" type="number">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

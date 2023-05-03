@@ -8,6 +8,6 @@ import java.util.Optional;
 @Repository
 public interface AlarmEventRepository extends JpaRepository<AlarmEventJPA, Long> {
 
-    Optional<AlarmEventJPA> findAlarmEventJPABySensorIdAndConditionOrderByOccurrenceTimeDesc(Long sensorId, String condition);
+    Optional<AlarmEventJPA> findFirstBySensorIdAndConditionOrderByOccurrenceTimeDesc(Long sensorId, String condition);
 
 }

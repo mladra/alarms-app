@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.example")
 public class DataAnalyzerApplication {
 
     public static void main(String[] args) {
