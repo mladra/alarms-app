@@ -19,7 +19,7 @@
             <column name="event_id" type="number">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="type" type="varchar2">
+            <column name="status" type="varchar2">
                 <constraints nullable="false"/>
             </column>
             <column name="condition" type="varchar2">
