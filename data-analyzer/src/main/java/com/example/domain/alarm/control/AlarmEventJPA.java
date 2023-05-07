@@ -1,4 +1,4 @@
-package com.example.data.control;
+package com.example.domain.alarm.control;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ALARMS_EVENTS")
-public class AlarmEventJPA {
+class AlarmEventJPA {
 
     @Id
     @SequenceGenerator(name = "alarms-events-generator", sequenceName = "SEQ_ALARMS_EVENTS", allocationSize = 1)
@@ -19,43 +19,47 @@ public class AlarmEventJPA {
     @Column(name = "CONDITION")
     private String condition;
 
-    @Column(name = "TYPE")
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    private AlarmEventType type;
+    private AlarmStatus type;
 
     @Column(name = "OCCURRENCE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date occurrenceTime;
 
-    public void setSensorId(Long sensorId) {
+    void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    void setSensorId(Long sensorId) {
         this.sensorId = sensorId;
     }
 
-    public void setCondition(String condition) {
+    void setCondition(String condition) {
         this.condition = condition;
     }
 
-    public void setType(AlarmEventType type) {
+    void setStatus(AlarmStatus type) {
         this.type = type;
     }
 
-    public Long getEventId() {
+    Long getEventId() {
         return eventId;
     }
 
-    public Long getSensorId() {
+    Long getSensorId() {
         return sensorId;
     }
 
-    public String getCondition() {
+    String getCondition() {
         return condition;
     }
 
-    public AlarmEventType getType() {
+    AlarmStatus getStatus() {
         return type;
     }
 
-    public Date getOccurrenceTime() {
+    Date getOccurrenceTime() {
         return occurrenceTime;
     }
 
@@ -65,7 +69,7 @@ public class AlarmEventJPA {
         this.occurrenceTime = Date.from(Instant.now());
     }
 
-    public enum AlarmEventType {
-        RAISE, CLEARED
+    enum AlarmStatus {
+        RAISE, CLEAR
     }
 }

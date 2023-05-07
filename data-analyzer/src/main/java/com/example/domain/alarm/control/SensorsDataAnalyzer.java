@@ -1,9 +1,9 @@
-package com.example.data.control;
+package com.example.domain.alarm.control;
 
-import com.example.data.control.alarm.AlarmClearedEvent;
-import com.example.data.control.alarm.AlarmRaisedEvent;
-import com.example.data.control.condition.AlarmCondition;
-import com.example.data.entity.Sensor;
+import com.example.domain.alarm.control.events.AlarmClearedApplicationEvent;
+import com.example.domain.alarm.control.events.AlarmRaisedApplicationEvent;
+import com.example.domain.condition.AlarmCondition;
+import com.example.domain.alarm.entity.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +14,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class DataAnalyzer {
+public class SensorsDataAnalyzer {
 
-    private final static Logger logger = LoggerFactory.getLogger(DataAnalyzer.class);
+    private final static Logger logger = LoggerFactory.getLogger(SensorsDataAnalyzer.class);
 
     private final Map<Long, Map<AlarmCondition, Long>> errorsCountBySensorIdAndCondition = new HashMap<>();
     private final Collection<AlarmCondition> conditions;
     private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public DataAnalyzer(Collection<AlarmCondition> conditions, ApplicationEventPublisher eventPublisher) {
+    public SensorsDataAnalyzer(Collection<AlarmCondition> conditions, ApplicationEventPublisher eventPublisher) {
         this.conditions = conditions;
         this.eventPublisher = eventPublisher;
         logger.info("Discovered conditions: {}", this.conditions.stream().map(AlarmCondition::name).collect(Collectors.toSet()));
@@ -82,14 +82,14 @@ public class DataAnalyzer {
         }
 
         errorsCountBySensorIdAndCondition.get(sensorId).remove(condition);
-        eventPublisher.publishEvent(new AlarmClearedEvent(this, condition.name(), sensorId));
+        eventPublisher.publishEvent(new AlarmClearedApplicationEvent(this, condition.name(), sensorId));
     }
 
     private void generateAlarms() {
         errorsCountBySensorIdAndCondition.forEach((sensorId, errorsCountByCondition) -> {
             errorsCountByCondition.forEach((condition, errorsCount) -> {
                 if (errorsCount >= condition.occurrences()) {
-                    eventPublisher.publishEvent(new AlarmRaisedEvent(this, condition.name(), sensorId));
+                    eventPublisher.publishEvent(new AlarmRaisedApplicationEvent(this, condition.name(), sensorId));
                 }
             });
         });

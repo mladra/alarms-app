@@ -1,4 +1,4 @@
-package com.example.kafka;
+package com.example.infrastructure.kafka;
 
 import com.example.api.SensorDataDTO;
 import org.apache.kafka.clients.admin.NewTopic;

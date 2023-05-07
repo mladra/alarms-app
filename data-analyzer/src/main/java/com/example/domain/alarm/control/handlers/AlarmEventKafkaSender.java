@@ -1,9 +1,8 @@
-package com.example.data.control;
+package com.example.domain.alarm.control.handlers;
 
 import com.example.api.AlarmEventDTO;
-import com.example.data.control.alarm.AlarmClearedEvent;
-import com.example.data.control.alarm.AlarmEvent;
-import com.example.kafka.KafkaTopicsConfiguration;
+import com.example.domain.alarm.control.events.AlarmApplicationEvent;
+import com.example.infrastructure.kafka.KafkaTopicsConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AlarmEventKafkaSender implements ApplicationListener<AlarmEvent> {
+public class AlarmEventKafkaSender implements ApplicationListener<AlarmApplicationEvent> {
 
     private final static Logger logger = LoggerFactory.getLogger(AlarmEventKafkaSender.class);
 
@@ -27,18 +26,10 @@ public class AlarmEventKafkaSender implements ApplicationListener<AlarmEvent> {
     }
 
     @Override
-    public void onApplicationEvent(AlarmEvent event) {
+    public void onApplicationEvent(AlarmApplicationEvent event) {
         logger.info("Received application event: {}", event);
-        AlarmEventDTO.AlarmType type = computeAlarmType(event);
-        AlarmEventDTO kafkaEvent = new AlarmEventDTO(type, event.getSensorId(), event.getName());
+        AlarmEventDTO.AlarmStatusDTO status = AlarmEventDTO.AlarmStatusDTO.valueOf(event.getStatus().name());
+        AlarmEventDTO kafkaEvent = new AlarmEventDTO(status, event.getSensorId(), event.getConditionName());
         kafkaTemplate.send(topicsConfiguration.getAlarmsTopicName(), String.valueOf(event.getSensorId()), kafkaEvent);
-    }
-
-    private AlarmEventDTO.AlarmType computeAlarmType(AlarmEvent alarmEvent) {
-        if (alarmEvent instanceof AlarmClearedEvent) {
-            return AlarmEventDTO.AlarmType.CLEAR;
-        }
-
-        return AlarmEventDTO.AlarmType.RAISE;
     }
 }

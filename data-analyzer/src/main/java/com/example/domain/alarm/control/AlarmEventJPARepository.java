@@ -1,4 +1,4 @@
-package com.example.data.control;
+package com.example.domain.alarm.control;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AlarmEventRepository extends JpaRepository<AlarmEventJPA, Long> {
+interface AlarmEventJPARepository extends JpaRepository<AlarmEventJPA, Long> {
 
     Optional<AlarmEventJPA> findFirstBySensorIdAndConditionOrderByOccurrenceTimeDesc(Long sensorId, String condition);
 

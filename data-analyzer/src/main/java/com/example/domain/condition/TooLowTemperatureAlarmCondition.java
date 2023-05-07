@@ -1,6 +1,6 @@
-package com.example.data.control.condition;
+package com.example.domain.condition;
 
-import com.example.data.entity.Sensor;
+import com.example.domain.alarm.entity.Sensor;
 import org.springframework.stereotype.Component;
 
 @Component

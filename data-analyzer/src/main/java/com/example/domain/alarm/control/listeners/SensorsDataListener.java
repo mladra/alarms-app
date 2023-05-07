@@ -1,8 +1,8 @@
-package com.example.kafka;
+package com.example.domain.alarm.control.listeners;
 
+import com.example.domain.alarm.control.SensorsDataAnalyzer;
 import com.example.api.SensorDataDTO;
-import com.example.data.control.DataAnalyzer;
-import com.example.data.entity.Sensor;
+import com.example.domain.alarm.entity.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class DataListener {
+public class SensorsDataListener {
 
-    private static final Logger log = LoggerFactory.getLogger(DataListener.class);
+    private static final Logger log = LoggerFactory.getLogger(SensorsDataListener.class);
     private static final String TEMPERATURE = "temperature";
-    private final DataAnalyzer dataAnalyzer;
+    private final SensorsDataAnalyzer sensorsDataAnalyzer;
 
     @Autowired
-    public DataListener(DataAnalyzer dataAnalyzer) {
-        this.dataAnalyzer = dataAnalyzer;
+    public SensorsDataListener(SensorsDataAnalyzer sensorsDataAnalyzer) {
+        this.sensorsDataAnalyzer = sensorsDataAnalyzer;
     }
 
     @KafkaListener(topics = "sensors-data", containerFactory = "dataListenerContainerFactory")
@@ -33,7 +33,7 @@ public class DataListener {
                 .map(readings -> readings.get(TEMPERATURE))
                 .map(Double::valueOf)
                 .ifPresent(builder::withTemperature);
-        dataAnalyzer.analyze(builder.build());
+        sensorsDataAnalyzer.analyze(builder.build());
     }
 
 }

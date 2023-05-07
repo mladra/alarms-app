@@ -1,6 +1,6 @@
-package com.example.data.boundary;
+package com.example.domain.alarm.boundary;
 
-import com.example.data.control.DataAnalyzer;
+import com.example.domain.alarm.control.SensorsDataAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,20 +15,20 @@ import java.util.Map;
 @RequestMapping("/alarms")
 public class AlarmConditionResource {
 
-    private final DataAnalyzer dataAnalyzer;
+    private final SensorsDataAnalyzer sensorsDataAnalyzer;
 
     @Autowired
-    public AlarmConditionResource(DataAnalyzer dataAnalyzer) {
-        this.dataAnalyzer = dataAnalyzer;
+    public AlarmConditionResource(SensorsDataAnalyzer sensorsDataAnalyzer) {
+        this.sensorsDataAnalyzer = sensorsDataAnalyzer;
     }
 
     @GetMapping("/conditions")
     public ResponseEntity<Collection<String>> availableConditions() {
-        return ResponseEntity.ok(dataAnalyzer.getAvailableConditionNames());
+        return ResponseEntity.ok(sensorsDataAnalyzer.getAvailableConditionNames());
     }
 
     @GetMapping("/{sensorId}")
     public ResponseEntity<Map<String, Long>> alarmsByCondition(@PathVariable Long sensorId) {
-        return ResponseEntity.ok(dataAnalyzer.getAlarmsCountByConditionName(sensorId));
+        return ResponseEntity.ok(sensorsDataAnalyzer.getAlarmsCountByConditionName(sensorId));
     }
 }

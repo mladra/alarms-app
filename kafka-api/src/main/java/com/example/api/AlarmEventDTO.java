@@ -7,19 +7,19 @@ import java.util.Objects;
 
 public class AlarmEventDTO {
 
-    private final AlarmType type;
+    private final AlarmStatusDTO status;
     private final Long sensorId;
     private final String condition;
 
     @JsonCreator
-    public AlarmEventDTO(@JsonProperty("type") AlarmType type, @JsonProperty("sensorId") Long sensorId, @JsonProperty("condition") String condition) {
-        this.type = type;
+    public AlarmEventDTO(@JsonProperty("type") AlarmStatusDTO status, @JsonProperty("sensorId") Long sensorId, @JsonProperty("condition") String condition) {
+        this.status = status;
         this.sensorId = sensorId;
         this.condition = condition;
     }
 
-    public AlarmType getType() {
-        return type;
+    public AlarmStatusDTO getStatus() {
+        return status;
     }
 
     public Long getSensorId() {
@@ -30,7 +30,7 @@ public class AlarmEventDTO {
         return condition;
     }
 
-    public enum AlarmType {
+    public enum AlarmStatusDTO {
         RAISE, CLEAR
     }
 
@@ -39,18 +39,18 @@ public class AlarmEventDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlarmEventDTO that = (AlarmEventDTO) o;
-        return type == that.type && Objects.equals(sensorId, that.sensorId) && Objects.equals(condition, that.condition);
+        return status == that.status && Objects.equals(sensorId, that.sensorId) && Objects.equals(condition, that.condition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, sensorId, condition);
+        return Objects.hash(status, sensorId, condition);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AlarmEventDTO{");
-        sb.append("type=").append(type);
+        sb.append("type=").append(status);
         sb.append(", sensorId=").append(sensorId);
         sb.append(", condition='").append(condition).append('\'');
         sb.append('}');
