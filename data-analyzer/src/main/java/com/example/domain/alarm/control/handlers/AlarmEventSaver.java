@@ -36,7 +36,7 @@ public class AlarmEventSaver implements ApplicationListener<AlarmApplicationEven
     private void handleClearEvent(AlarmApplicationEvent event) {
         repository.findLastRaiseAlarmEvent(event.getSensorId(), event.getConditionName())
                 .flatMap(Alarm::getExistingAlarmId)
-                .map(alarmId -> mapToAlarmEntity(alarmId, event, Alarm.AlarmEntityStatus.CLEAR))
+                .map(ignoredId -> mapToAlarmEntity(event, Alarm.AlarmEntityStatus.CLEAR))
                 .ifPresent(repository::save);
     }
 
@@ -47,15 +47,10 @@ public class AlarmEventSaver implements ApplicationListener<AlarmApplicationEven
     }
 
     private Alarm mapToAlarmEntity(AlarmApplicationEvent event, Alarm.AlarmEntityStatus status) {
-        return mapToAlarmEntity(null, event, status);
-    }
-
-    private Alarm mapToAlarmEntity(Long existingAlarmId, AlarmApplicationEvent event, Alarm.AlarmEntityStatus status) {
         return Alarm.builder()
                 .withConditionName(event.getConditionName())
                 .withSensorId(event.getSensorId())
                 .withStatus(status)
-                .withExistingAlarmId(existingAlarmId)
                 .build();
     }
 }
